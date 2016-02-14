@@ -9,7 +9,6 @@ module Rstk
     end
 
     def show opt={"done" => false}
-      p opt
       @list.query(opt).each do |l|
         puts format(l)
       end
