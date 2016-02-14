@@ -4,7 +4,8 @@ module Rstk
     Project    = "project"
     Someday    = "someday"
     Waiting    = "waiting"
-    List       = [NextAction, Project, Someday, Waiting].freeze
+    Calendar   = "calendar"
+    List       = [NextAction, Project, Someday, Waiting, Calendar].freeze
   end
 end
 

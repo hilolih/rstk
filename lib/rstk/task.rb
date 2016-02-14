@@ -28,5 +28,13 @@ module Rstk
       @list.add task
     end
 
+    def delete id
+      # 既存のidかチェック
+      unless @list.has_task?(id)
+        raise Rstk::Error::IdError
+      end
+      @list.delete(id)
+    end
+
   end
 end

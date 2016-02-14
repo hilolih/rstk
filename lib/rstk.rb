@@ -7,5 +7,6 @@ module Rstk
   require "rstk/yamllist"
   require "rstk/categories"
   require "rstk/error/categories_error"
+  require "rstk/error/id_error"
 end
 

@@ -20,6 +20,10 @@ module Rstk
     def read
     end
 
+    def has_task? id
+      @tasks.any?{|t| t["id"] == id}
+    end
+
     def query opt
       @tasks.select!{|t| 
         opt.all?{|k,v|
@@ -40,6 +44,11 @@ module Rstk
       @tasks << default_task.merge(task)
       commit
       # puts @tasks
+    end
+
+    def delete id
+      @tasks.delete_if{|task| task["id"] == id }
+      commit
     end
 
     def commit
