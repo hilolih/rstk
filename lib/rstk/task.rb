@@ -37,7 +37,8 @@ module Rstk
       temp.puts template.to_yaml
       temp.close
       #
-      cmd = "</dev/tty >/dev/tty #{ENV['EDITOR']} #{temp.path}"
+      option = "-c \"call cursor(2,8)\""
+      cmd = "</dev/tty >/dev/tty #{ENV['EDITOR']} #{option} #{temp.path}"
       status, stdout, stderr = systemu cmd
       task = Psych.load( open( temp.path, "r" ).read )
       if task.has_key?("category") and  
