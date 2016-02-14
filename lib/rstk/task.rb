@@ -21,6 +21,10 @@ module Rstk
     end
 
     def add_from_cmdline task
+      # categoryに未定義の単語を入れさせない(空はOK）
+      if task.has_key?("category") and  not Categories::List.include?( task["category"] )
+        raise Rstk::Error::CategoriesError
+      end
       @list.add task
     end
 

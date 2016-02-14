@@ -1,7 +1,8 @@
 require "rstk"
 
 task = Rstk::Task.new
-# task.add_from_cmdline({"name"=> "add test"})
-task.show({})
-#task.show()
+task.add_from_cmdline({"name"=> "add test"})
+#  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
+#task.show({})
+task.show()
 
