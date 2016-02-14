@@ -28,6 +28,27 @@ module Rstk
       @list.add task
     end
 
+    def add
+      temp = ::Tempfile.new("rstk")
+      template = {
+        "name" => "",
+        "category" => "",
+      }
+      temp.puts template.to_yaml
+      temp.close
+      #
+      cmd = "</dev/tty >/dev/tty #{ENV['EDITOR']} #{temp.path}"
+      status, stdout, stderr = systemu cmd
+      task = Psych.load( open( temp.path, "r" ).read )
+      if task['name'] != ""
+        @list.add task
+        puts "[*] タスク登録しました: #{task['name']}"
+      else
+        raise Rstk::Error::IdError
+      end
+
+    end
+
     def delete id
       # 既存のidかチェック
       unless @list.has_task?(id)

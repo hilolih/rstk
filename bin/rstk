@@ -3,10 +3,8 @@ require "rstk"
 task = Rstk::Task.new
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
-task.show({})
-
 # task.delete( 20160214122152 )
 # task.delete( 201 )
-puts "----------------------------------"
-
+task.add
 task.show({})
+

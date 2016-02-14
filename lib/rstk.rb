@@ -1,5 +1,7 @@
 require "rstk/version"
 require "psych"
+require "systemu"
+require "tempfile"
 
 module Rstk
   require "rstk/task"
