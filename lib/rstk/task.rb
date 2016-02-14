@@ -40,6 +40,11 @@ module Rstk
       cmd = "</dev/tty >/dev/tty #{ENV['EDITOR']} #{temp.path}"
       status, stdout, stderr = systemu cmd
       task = Psych.load( open( temp.path, "r" ).read )
+      if task.has_key?("category") and  
+        task["category"] != "" and
+        not Categories::List.include?( task["category"] )
+        raise Rstk::Error::CategoriesError
+      end
       if task['name'] != ""
         @list.add task
         puts "[*] タスク登録しました: #{task['name']}"
