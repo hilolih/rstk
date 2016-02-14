@@ -7,7 +7,3 @@ module Rstk
   require "rstk/yamllist"
 end
 
-task = Rstk::Task.new
-# task.add_from_cmdline({"name"=> "add test"})
-# task.show({})
-task.show()
