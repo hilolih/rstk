@@ -1,14 +1,14 @@
 # encoding: utf-8
 module Rstk
   class List
-    def initialize
-    end
+    include Enumerable
+    def initialize; end
 
-    def read
-    end
+    def read; end
 
-    def query
-    end
+    def query; end
+
+    def add; end
   end
 end
 

@@ -8,13 +8,40 @@ module Rstk
         ast = Psych.parse f.read
         @tasks = ast.to_ruby
       }
-      puts @tasks[0]["name"].encode("sjis")
+      # puts @tasks[0]["name"].encode("sjis")
+    end
+
+    def each
+      @tasks.each do |task|
+        yield task
+      end
     end
 
     def read
     end
 
-    def query
+    def query opt
+      @tasks.select!{|t| 
+        opt.all?{|k,v|
+          v == t[k]
+        }
+      }
+      self
+    end
+
+    def add task
+      default_task = {
+        "id" => Time.now.strftime("%Y%m%d%H%M%S"),
+        "category" => nil,
+        "done" => false,
+        "datetime" => Time.now.strftime("%Y%m%d %H%M%S"),
+        "due-date" => nil,
+      }
+      @tasks << default_task.merge(task)
+      puts @tasks
+    end
+
+    def commit
     end
   end
 end

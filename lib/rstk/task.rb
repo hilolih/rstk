@@ -8,7 +8,21 @@ module Rstk
       puts e
     end
 
-    def list
+    def show opt={"done" => false}
+      p opt
+      @list.query(opt).each do |l|
+        puts format(l)
+      end
+    end
+
+    def format line
+      done = line["done"] ? "[x]" : "[*]"
+      category = "[%12s]" % [ line["category"] ]
+      return "#{done} #{category} #{line['name']}"
+    end
+
+    def add_from_cmdline task
+      @list.add task
     end
 
   end
