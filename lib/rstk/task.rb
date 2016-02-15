@@ -36,7 +36,7 @@ module Rstk
       }
       temp.puts template.to_yaml
       temp.close
-      #
+      # 2行目、８カラム目でvimを起動
       option = "-c \"call cursor(2,8)\""
       cmd = "</dev/tty >/dev/tty #{ENV['EDITOR']} #{option} #{temp.path}"
       status, stdout, stderr = systemu cmd

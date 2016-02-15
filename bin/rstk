@@ -1,10 +1,25 @@
 require "rstk"
+require "optparse"
+params = ARGV.getopts('a')
 
-task = Rstk::Task.new
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
 # task.delete( 20160214122152 )
 # task.delete( 201 )
-task.add
-task.show({})
+# task.add
+#
+
+if params["a"]
+  task = Rstk::Task.new
+  task.add
+else
+  task = Rstk::Task.new
+  task.show({ "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false })
+  task = Rstk::Task.new
+  task.show({ "category" => "next action", "done" => false})
+  task = Rstk::Task.new
+  task.show({ "category" => "waiting", "done" => false})
+  task = Rstk::Task.new
+  task.show({ "category" => "", "done" => false })
+end
 
