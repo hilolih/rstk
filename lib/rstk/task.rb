@@ -35,6 +35,7 @@ module Rstk
       template = {
         "name" => "",
         "category" => "",
+        "kaisya" => true,
       }
       temp.puts template.to_yaml
       temp.close

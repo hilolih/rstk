@@ -40,6 +40,7 @@ module Rstk
         "done" => false,
         "datetime" => Time.now.strftime("%Y/%m/%d %H:%M:%S"),
         "due-date" => nil,
+        "kaisya" => true,
       }
       @tasks << default_task.merge(task)
       commit
