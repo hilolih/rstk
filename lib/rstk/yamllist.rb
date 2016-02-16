@@ -35,7 +35,7 @@ module Rstk
 
     def add task
       default_task = {
-        "id" => Time.now.strftime("%Y%m%d%H%M%S").to_i,
+        "id" => ::SecureRandom.hex,
         "category" => nil,
         "done" => false,
         "datetime" => Time.now.strftime("%Y/%m/%d %H:%M:%S"),

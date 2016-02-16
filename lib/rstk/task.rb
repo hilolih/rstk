@@ -76,7 +76,7 @@ module Rstk
 
     def name_check opt
       if not opt.has_key?("name") or (opt["name"] == "")
-        raise Rstk::Error::IdError
+        raise Rstk::Error::NameError
       end
     end
 
