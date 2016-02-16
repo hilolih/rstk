@@ -9,6 +9,7 @@ module Rstk
     end
 
     def show opt={"done" => false}
+      category_check opt
       @list.query(opt).each do |l|
         puts format(l)
       end
@@ -17,14 +18,15 @@ module Rstk
     def format line
       done = line["done"] ? "[x]" : "[*]"
       category = "[%12s]" % [ line["category"] ]
-      return "#{done} #{category} #{line['name']}"
+      duedate = ""
+      if (line["category"] == 'calendar') and line["due-date"]
+        duedate = "(" + line["due-date"] + ")"
+      end
+      return "#{done} #{category} #{line['name']} #{duedate}"
     end
 
     def add_from_cmdline task
-      # categoryに未定義の単語を入れさせない(空はOK）
-      if task.has_key?("category") and  not Categories::List.include?( task["category"] )
-        raise Rstk::Error::CategoriesError
-      end
+      category_check task
       @list.add task
     end
 
@@ -41,17 +43,15 @@ module Rstk
       cmd = "</dev/tty >/dev/tty #{ENV['EDITOR']} #{option} #{temp.path}"
       status, stdout, stderr = systemu cmd
       task = Psych.load( open( temp.path, "r" ).read )
-      if task.has_key?("category") and  
-        task["category"] != "" and
-        not Categories::List.include?( task["category"] )
-        raise Rstk::Error::CategoriesError
-      end
-      if task['name'] != ""
-        @list.add task
-        puts "[*] タスク登録しました: #{task['name']}"
-      else
-        raise Rstk::Error::IdError
-      end
+      # 
+      category_check task
+      name_check task
+      @list.add task
+      puts "[*] タスク登録しました: #{task['name']}"
+      # if task['name'] != ""
+      # else
+      #   raise Rstk::Error::IdError
+      # end
 
     end
 
@@ -61,6 +61,23 @@ module Rstk
         raise Rstk::Error::IdError
       end
       @list.delete(id)
+    end
+
+    private
+
+    def category_check opt
+      # categoryに未定義の単語を入れさせない(空はOK）
+      if opt.has_key?("category") and
+        opt["category"] != "" and
+        not Categories::List.include?( opt["category"] )
+        raise Rstk::Error::CategoriesError
+      end
+    end
+
+    def name_check opt
+      if not opt.has_key?("name") or (opt["name"] == "")
+        raise Rstk::Error::IdError
+      end
     end
 
   end

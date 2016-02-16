@@ -1,6 +1,6 @@
 require "rstk"
 require "optparse"
-params = ARGV.getopts('a')
+params = ARGV.getopts('ac:', 'all')
 
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
@@ -8,11 +8,21 @@ params = ARGV.getopts('a')
 # task.delete( 201 )
 # task.add
 #
-
+#
 if params["a"]
+  # add task
   task = Rstk::Task.new
   task.add
+elsif params["c"]
+  # show category task
+  params["c"]
+  task = Rstk::Task.new
+  task.show({"category" => "#{params['c']}"})
+elsif params["all"]
+  task = Rstk::Task.new
+  task.show({})
 else
+  # show default option
   task = Rstk::Task.new
   task.show({ "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false })
   task = Rstk::Task.new
