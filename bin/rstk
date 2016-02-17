@@ -1,6 +1,6 @@
 require "rstk"
 require "optparse"
-params = ARGV.getopts('ac:', 'all')
+params = ARGV.getopts('ac:', 'all', 'home')
 
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
@@ -9,6 +9,11 @@ params = ARGV.getopts('ac:', 'all')
 # task.add
 #
 #
+kaisya = true
+if params["home"]
+  kaisya = false
+end
+
 if params["a"]
   # add task
   task = Rstk::Task.new
@@ -24,12 +29,12 @@ elsif params["all"]
 else
   # show default option
   task = Rstk::Task.new
-  task.show({ "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false })
+  task.show({ "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false, "kaisya" => kaisya  })
   task = Rstk::Task.new
-  task.show({ "category" => "next action", "done" => false})
+  task.show({ "category" => "next action", "done" => false, "kaisya" => kaisya })
   task = Rstk::Task.new
-  task.show({ "category" => "waiting", "done" => false})
+  task.show({ "category" => "waiting", "done" => false, "kaisya" => kaisya })
   task = Rstk::Task.new
-  task.show({ "category" => "", "done" => false })
+  task.show({ "category" => "", "done" => false, "kaisya" => kaisya  })
 end
 
