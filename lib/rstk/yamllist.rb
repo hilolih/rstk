@@ -33,6 +33,15 @@ module Rstk
       self
     end
 
+    def task id
+      r = Regexp.new(id)
+      task = @tasks.select{|t| r.match(t["id"])}
+      if task.nil? or not task.one?
+        raise Rstk::Error::IdError
+      end
+      task.first
+    end
+
     def add task
       default_task = {
         "id" => ::SecureRandom.hex,

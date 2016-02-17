@@ -1,6 +1,6 @@
 require "rstk"
 require "optparse"
-params = ARGV.getopts('ac:', 'all', 'home')
+params = ARGV.getopts('ac:e:', 'all', 'home')
 
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
@@ -18,6 +18,10 @@ if params["a"]
   # add task
   task = Rstk::Task.new
   task.add
+elsif params["e"]
+  # edit task
+  task = Rstk::Task.new
+  task.edit params["e"]
 elsif params["c"]
   # show category task
   params["c"]

@@ -22,12 +22,16 @@ module Rstk
       if (line["category"] == 'calendar') and line["due-date"]
         duedate = "(" + line["due-date"] + ")"
       end
-      return "#{done} #{category} #{line['name']} #{duedate}"
+      return "#{done} #{line['id'][0,6]} #{category} #{line['name']} #{duedate}"
     end
 
     def add_from_cmdline task
       category_check task
       @list.add task
+    end
+
+    def edit id
+      p @list.task id
     end
 
     def add
@@ -49,16 +53,11 @@ module Rstk
       name_check task
       @list.add task
       puts "[*] タスク登録しました: #{task['name']}"
-      # if task['name'] != ""
-      # else
-      #   raise Rstk::Error::IdError
-      # end
-
     end
 
     def delete id
       # 既存のidかチェック
-      unless @list.has_task?(id)
+      unless @list.has_only_task?(id)
         raise Rstk::Error::IdError
       end
       @list.delete(id)
