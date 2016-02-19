@@ -2,9 +2,9 @@
 module Rstk
   TASK_FILE = "/home/hilolih/GTD/task.yml"
   class YamlList < List
-    def initialize
+    def initialize(path=TASK_FILE)
       @tasks = nil
-      open( TASK_FILE, "r"){|f|
+      open( path, "r"){|f|
         ast = Psych.parse f.read
         @tasks = ast.to_ruby
       }
@@ -17,7 +17,10 @@ module Rstk
       end
     end
 
-    def read
+    def update new
+      raise Rstk::Error::IdError unless new.has_key?('id')
+      old = task( new['id'] )
+      true
     end
 
     def has_task? id
