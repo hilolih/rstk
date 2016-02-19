@@ -43,4 +43,10 @@ describe Rstk::YamlList do
       @list.update({ "id" => "hogehoge", "done" => true, }) 
     }.to raise_error(Rstk::Error::IdError)
   end
+
+  it 'delete task has not id so that IdError' do
+    expect { 
+      @list.delete({ "id" => "hogehoge", "done" => true, }) 
+    }.to raise_error(Rstk::Error::IdError)
+  end
 end

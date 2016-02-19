@@ -4,7 +4,8 @@ module Rstk
   class YamlList < List
     def initialize(path=TASK_FILE)
       @tasks = nil
-      open( path, "r"){|f|
+      @path = path
+      open( @path, "r"){|f|
         ast = Psych.parse f.read
         @tasks = ast.to_ruby
       }
@@ -18,15 +19,13 @@ module Rstk
     end
 
     def update new
-      raise Rstk::Error::IdError unless new.has_key?('id')
-      old = task( new['id'] )
-      update_task = old.merge(new)
-      @tasks.map!{|t|
-        t['id'] == update_task['id'] ? update_task : t
-      }
-      commit
-      return update_task
+      super(new)
     end
+
+    def delete deltask
+      super(deltask)
+    end
+
 
     def has_task? id
       @tasks.any?{|t| t["id"] == id}
@@ -64,14 +63,9 @@ module Rstk
       # puts @tasks
     end
 
-    def delete id
-      @tasks.delete_if{|task| task["id"] == id }
-      commit
-    end
-
     def commit
       # puts @tasks.to_yaml
-      open( TASK_FILE, "w"){|f|
+      open( @path, "w"){|f|
         f.puts @tasks.to_yaml
       }
     end

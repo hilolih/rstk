@@ -36,7 +36,11 @@ module Rstk
       temp = create_temp( old )
       Rstk::Editor::Vim.new.open( temp.path )
       task = Psych.load( open( temp.path, "r" ).read )
-      @list.update( task )
+      #
+      category_check task
+      name_check task
+      task = @list.update( task )
+      puts "[*] タスク変更しました: #{task['name']}"
     end
 
     def add
@@ -52,11 +56,8 @@ module Rstk
     end
 
     def delete id
-      # 既存のidかチェック
-      unless @list.has_only_task?(id)
-        raise Rstk::Error::IdError
-      end
-      @list.delete(id)
+      task = @list.delete({"id" => id})
+      puts "[*] タスク削除しました: #{task['name']}"
     end
 
     private
