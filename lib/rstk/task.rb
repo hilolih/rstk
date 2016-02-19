@@ -31,19 +31,17 @@ module Rstk
     end
 
     def edit id
-      p @list.task id
+      old = @list.task id
+      # Editorを起動してタスク登録
+      temp = create_temp( old )
+      Rstk::Editor::Vim.new.open( temp.path )
+      task = Psych.load( open( temp.path, "r" ).read )
+      @list.update( task )
     end
 
     def add
-      temp = ::Tempfile.new("rstk")
-      template = {
-        "name" => "",
-        "category" => "",
-        "kaisya" => true,
-      }
-      temp.puts template.to_yaml
-      temp.close
       # Editorを起動してタスク登録
+      temp = create_temp({ "name" => "", "category" => "", "kaisya" => true, })
       Rstk::Editor::Vim.new.open( temp.path )
       task = Psych.load( open( temp.path, "r" ).read )
       # 
@@ -76,6 +74,15 @@ module Rstk
       if not opt.has_key?("name") or (opt["name"] == "")
         raise Rstk::Error::NameError
       end
+    end
+
+    private 
+
+    def create_temp hash
+      temp = ::Tempfile.new("rstk")
+      temp.puts hash.to_yaml
+      temp.close
+      return temp
     end
 
   end

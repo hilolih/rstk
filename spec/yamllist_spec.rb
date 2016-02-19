@@ -25,7 +25,13 @@ describe Rstk::YamlList do
       "id" => "abcdefg",
       "done" => true,
     })
-    expect(got).to eq true
+    expect(got).to eq({
+      "id"  => "abcdefg",
+      "name" => "test1",
+      "category" => "waiting",
+      "kaisya" => true,
+      "done" => true
+    })
   end
 
   it 'update task has not id so that IdError' do

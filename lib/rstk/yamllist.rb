@@ -20,7 +20,12 @@ module Rstk
     def update new
       raise Rstk::Error::IdError unless new.has_key?('id')
       old = task( new['id'] )
-      true
+      update_task = old.merge(new)
+      @tasks.map!{|t|
+        t['id'] == update_task['id'] ? update_task : t
+      }
+      commit
+      return update_task
     end
 
     def has_task? id
