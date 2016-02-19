@@ -1,6 +1,6 @@
 # encoding: utf-8
 module Rstk
-  TASK_FILE = "./task.yml"
+  TASK_FILE = "/home/hilolih/GTD/task.yml"
   class YamlList < List
     def initialize
       @tasks = nil
