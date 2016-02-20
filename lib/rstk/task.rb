@@ -40,13 +40,17 @@ module Rstk
       temp = create_temp( old )
       Rstk::Editor::Vim.new.open( temp.path )
       task = Psych.load( open( temp.path, "r" ).read )
-      #
-      category_check task
-      name_check task
-      done_check task
-      kaisya_check task
-      task = @list.update( task )
-      puts "[*] タスク変更しました: #{task['name']}"
+      if old == task
+        puts "[*] 中断します: #{task['name']}"
+      else
+        #
+        category_check task
+        name_check task
+        done_check task
+        kaisya_check task
+        task = @list.update( task )
+        puts "[*] タスク変更しました: #{task['name']}"
+      end
     end
 
     def add
