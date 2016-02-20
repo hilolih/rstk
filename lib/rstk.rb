@@ -12,6 +12,8 @@ module Rstk
   require "rstk/error/categories_error"
   require "rstk/error/id_error"
   require "rstk/error/name_error"
+  require "rstk/error/done_error"
+  require "rstk/error/kaisya_error"
   require "rstk/editor"
   require "rstk/editor/vim"
 end
