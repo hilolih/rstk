@@ -54,7 +54,7 @@ module Rstk
         "id" => ::SecureRandom.hex,
         "category" => nil,
         "done" => false,
-        "datetime" => Time.now.strftime("%Y/%m/%d %H:%M:%S"),
+        "create_time" => Time.now.strftime("%Y/%m/%d %H:%M:%S"),
         "due-date" => nil,
         "kaisya" => true,
       }
