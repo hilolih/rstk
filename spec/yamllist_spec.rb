@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'time'
 
 describe Rstk::YamlList do
   before(:each) do
@@ -21,6 +22,8 @@ describe Rstk::YamlList do
   end
 
   it 'update test1 from undone to done' do
+    # Time.nowのスタブ
+    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(1981,1,21,12,12,12))
     got = @list.update({
       "id" => "abcdefg",
       "done" => true,
@@ -30,7 +33,8 @@ describe Rstk::YamlList do
       "name" => "test1",
       "category" => "waiting",
       "kaisya" => true,
-      "done" => true
+      "done" => true,
+      "update_time" => "1981/01/21 12:12:12"
     })
   end
 

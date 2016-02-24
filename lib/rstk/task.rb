@@ -55,7 +55,8 @@ module Rstk
 
     def add
       # Editorを起動してタスク登録
-      temp = create_temp({ "name" => "", "category" => "", "kaisya" => true, })
+      comment = "# due-date: yyyy/mm/dd\n"
+      temp = create_temp({ "name" => "", "category" => "", "kaisya" => true, }, comment)
       Rstk::Editor::Vim.new.open( temp.path )
       task = Psych.load( open( temp.path, "r" ).read )
       # 
@@ -103,9 +104,10 @@ module Rstk
 
     private 
 
-    def create_temp hash
+    def create_temp(hash, comment="")
       temp = ::Tempfile.new("rstk")
       temp.puts hash.to_yaml
+      temp.puts comment
       temp.close
       return temp
     end
