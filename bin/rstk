@@ -34,14 +34,12 @@ elsif params["d"]
   task = Rstk::Task.new
   task.delete(params["d"])
 else
-  # show default option
   task = Rstk::Task.new
-  task.show({ "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false, "kaisya" => kaisya  })
-  task = Rstk::Task.new
-  task.show({ "category" => "next action", "done" => false, "kaisya" => kaisya })
-  task = Rstk::Task.new
-  task.show({ "category" => "waiting", "done" => false, "kaisya" => kaisya })
-  task = Rstk::Task.new
-  task.show({ "category" => "", "done" => false, "kaisya" => kaisya  })
+
+  task.where([
+    { "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false, "kaisya" => kaisya  },
+    { "category" => "next action", "done" => false, "kaisya" => kaisya },
+    { "category" => "waiting", "done" => false, "kaisya" => kaisya },
+    { "category" => "", "done" => false, "kaisya" => kaisya  }])
 end
 

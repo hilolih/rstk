@@ -83,4 +83,18 @@ describe Rstk::YamlList do
   it 'takes id list returns to match tasks' do
     expect( @list.where({"id" => ["1234567a",  "abcdefg"]}).length).to eq(2) 
   end
+
+  it 'complex condition no 1' do
+    expect( @list.where({
+      "id"   => ["1234567a",  "abcdefg"], 
+      "name" => "test1"}).length
+    ).to eq(1) 
+  end
+
+  it 'complex condition no 2' do
+    expect( @list.where([
+      {"id"   => ["1234567a",  "abcdefg"]},
+      {"name" => "test1"}
+    ]).length).to eq(2) 
+  end
 end

@@ -58,7 +58,7 @@ module Rstk
       when "Array"
         # OR condition
         condition.any?{|c| where_iter task, c}
-      when "String","TrueClass", "FalseClass"
+      when "String", "TrueClass", "FalseClass"
         #puts "#{condition} , #{task}"
         task == condition
       else

@@ -19,6 +19,12 @@ module Rstk
       end
     end
 
+    def where opt={"done" => false}
+      @list.where(opt).each do |l|
+        puts format(l)
+      end
+    end
+
     def format line
       done = line["done"] ? "[x]" : "[*]"
       category = "[%12s]" % [ line["category"] ]
