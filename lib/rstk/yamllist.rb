@@ -1,4 +1,5 @@
 # encoding: utf-8
+require "pry"
 module Rstk
   TASK_FILE = "/home/hilolih/GTD/task.yml"
   class YamlList < List
@@ -38,6 +39,30 @@ module Rstk
         }
       }
       self
+    end
+
+    def where condition
+      return @tasks if condition == {}
+      @tasks.select{|t| where_iter t, condition}
+    end
+
+    def where_iter task, condition
+      case condition.class.to_s
+      when "Hash"
+        # AND condition
+        condition.all?{|k,v|
+          #v == task[k]
+          #puts "#{k} , #{v}"
+          where_iter task[k], v
+        }
+      when "Array"
+        # OR condition
+        condition.any?{|c| where_iter task, c}
+      when "String","TrueClass", "FalseClass"
+        #puts "#{condition} , #{task}"
+        task == condition
+      else
+      end
     end
 
     def task id
