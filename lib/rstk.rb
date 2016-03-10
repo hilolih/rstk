@@ -3,6 +3,7 @@ require "psych"
 require "systemu"
 require "tempfile"
 require "securerandom"
+require "date"
 
 module Rstk
   require "rstk/task"

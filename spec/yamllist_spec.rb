@@ -101,24 +101,39 @@ describe Rstk::YamlList do
 
   it 'where before due-date returns to 1 task' do
     # due-date is 2016/02/24
-    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2016,2,25))
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2016,2,25))
     expect( @list.where({"due-date" => {:before => "Today"}}).length).to eq(1) 
   end
 
-  it 'where before due-date returns to 1 task' do
+  it 'where before due-date returns to 1 task(due-date = today)' do
     # due-date is 2016/02/24
-    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2016,2,24))
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2016,2,24))
     expect( @list.where({"due-date" => {:before => "Today"}}).length).to eq(1) 
   end
 
-  it 'where before due-date returns to 1 task' do
+  it 'where before due-date returns to 0 task' do
     # due-date is 2016/02/24
-    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2016,2,23))
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2016,2,23))
     expect( @list.where({"due-date" => {:before => "Today"}}).length).to eq(0) 
   end
 
   it 'check_due_date return true' do
-    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2015,1,1))
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2015,1,2))
     expect( @list.check_due_date("2015/01/01", {:before => "Today"}) ).to be true 
+  end
+
+  it 'check_due_date return true' do
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2015,1,1))
+    expect( @list.check_due_date("2015/01/01", {:before => "Today"}) ).to be true 
+  end
+
+  it 'check_due_date return false' do
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2014,12,31))
+    expect( @list.check_due_date("2015/01/01", {:before => "Today"}) ).to be false 
+  end
+
+  it 'check_due_date between today and tommorow' do
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2014,12,31))
+    expect( @list.check_due_date("2015/01/01", {:after => "Today", :before => "Tomorrow"}) ).to be true 
   end
 end

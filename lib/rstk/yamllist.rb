@@ -50,11 +50,10 @@ module Rstk
       case condition.class.to_s
       when "Hash"
         # AND condition
+        if category == "due-date"
+          return check_due_date(tsk,condition)
+        end
         condition.all?{|k,v|
-          if category == "due-date"
-            
-            return (not tsk.nil?)
-          end
           #v == tsk[k]
           #puts "#{k} , #{v}"
           where_iter(tsk[k], v, k)
@@ -64,7 +63,6 @@ module Rstk
         condition.any?{|c| where_iter(tsk, c, category)}
       when "String", "TrueClass", "FalseClass"
         #puts "#{condition} , #{tsk}"
-        puts tsk
         tsk.to_s == condition.to_s
       else
       end
@@ -80,6 +78,35 @@ module Rstk
     end
 
     def check_due_date(date, condition)
+      return false if date.nil?
+      #binding.pry
+      due = Date.strptime(date, '%Y/%m/%d')
+      return condition.all?{|k,v|
+        cond = parse_date( v )
+        case k
+        when :before
+          due <= cond
+        when :after
+          due > cond
+        else
+          false
+        end
+      }
+    end
+
+    def parse_date str
+      date = nil
+      case str
+      when "Yesterday"
+        date = Date.today - 1
+      when "Today"
+        date = Date.today
+      when "Tomorrow"
+        date = Date.today + 1
+      else
+        date = Date.strptime(str, '%Y/%m/%d')
+      end
+      return date
     end
 
     def add task
