@@ -43,24 +43,24 @@ module Rstk
 
     def where condition
       return @tasks if condition == {}
-      @tasks.select{|t| where_iter t, condition}
+      @tasks.select{|t| where_iter( t, condition, "")}
     end
 
-    def where_iter task, condition
+    def where_iter tsk, condition, category
       case condition.class.to_s
       when "Hash"
         # AND condition
         condition.all?{|k,v|
-          #v == task[k]
+          #v == tsk[k]
           #puts "#{k} , #{v}"
-          where_iter task[k], v
+          where_iter(tsk[k], v, k)
         }
       when "Array"
         # OR condition
-        condition.any?{|c| where_iter task, c}
+        condition.any?{|c| where_iter(tsk, c, category)}
       when "String", "TrueClass", "FalseClass"
-        #puts "#{condition} , #{task}"
-        task == condition
+        #puts "#{condition} , #{tsk}"
+        tsk == condition
       else
       end
     end
