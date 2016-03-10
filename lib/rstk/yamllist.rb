@@ -51,6 +51,10 @@ module Rstk
       when "Hash"
         # AND condition
         condition.all?{|k,v|
+          if category == "due-date"
+            
+            return (not tsk.nil?)
+          end
           #v == tsk[k]
           #puts "#{k} , #{v}"
           where_iter(tsk[k], v, k)
@@ -60,7 +64,8 @@ module Rstk
         condition.any?{|c| where_iter(tsk, c, category)}
       when "String", "TrueClass", "FalseClass"
         #puts "#{condition} , #{tsk}"
-        tsk == condition
+        puts tsk
+        tsk.to_s == condition.to_s
       else
       end
     end
@@ -72,6 +77,9 @@ module Rstk
         raise Rstk::Error::IdError
       end
       task.first
+    end
+
+    def check_due_date(date, condition)
     end
 
     def add task

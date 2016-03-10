@@ -15,6 +15,7 @@ describe Rstk::YamlList do
       "id"  => "1234567",
       "name" => "test2",
       "category" => "calendar",
+      "due-date" => "2016/02/24",
       "kaisya" => false,
       "done" => false
      },
@@ -96,5 +97,28 @@ describe Rstk::YamlList do
       {"id"   => ["1234567a",  "abcdefg"]},
       {"name" => "test1"}
     ]).length).to eq(2) 
+  end
+
+  it 'where before due-date returns to 1 task' do
+    # due-date is 2016/02/24
+    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2016,2,25))
+    expect( @list.where({"due-date" => {:before => "Today"}}).length).to eq(1) 
+  end
+
+  it 'where before due-date returns to 1 task' do
+    # due-date is 2016/02/24
+    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2016,2,24))
+    expect( @list.where({"due-date" => {:before => "Today"}}).length).to eq(1) 
+  end
+
+  it 'where before due-date returns to 1 task' do
+    # due-date is 2016/02/24
+    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2016,2,23))
+    expect( @list.where({"due-date" => {:before => "Today"}}).length).to eq(0) 
+  end
+
+  it 'check_due_date return true' do
+    allow(Time).to receive_message_chain(:now).and_return(Time.mktime(2015,1,1))
+    expect( @list.check_due_date("2015/01/01", {:before => "Today"}) ).to be true 
   end
 end
