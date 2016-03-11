@@ -4,6 +4,8 @@ require "systemu"
 require "tempfile"
 require "securerandom"
 require "date"
+require "git"
+require "logger"
 
 module Rstk
   require "rstk/task"

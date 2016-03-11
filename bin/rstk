@@ -1,6 +1,6 @@
 require "rstk"
 require "optparse"
-params = ARGV.getopts('ac:e:d:', 'all', 'home')
+params = ARGV.getopts('ac:e:d:', 'all', 'home', 'commit')
 
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
@@ -33,6 +33,16 @@ elsif params["all"]
 elsif params["d"]
   task = Rstk::Task.new
   task.delete(params["d"])
+elsif params["commit"]
+  begin
+    log = Logger.new(STDOUT)
+    log.level = Logger::Severity::INFO
+    g = Git.open("/home/hilolih/GTD", :log => log)
+    g.commit_all('update')
+    g.push('sakura')
+  rescue Git::GitExecuteError => e
+    puts "[!] 最新でした"
+  end
 else
   task = Rstk::Task.new
 
@@ -41,12 +51,7 @@ else
     "kaisya"   => kaisya,
     "category" => [ "next action", "waiting", ""]
   },{
-    "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false, "kaisya" => kaisya
+    "due-date" => {:before => "Today"}, "done" => false, "kaisya" => kaisya
   }])
-  #task.where([
-  #  { "due-date" => Time.now.strftime("%Y/%m/%d"), "done" => false, "kaisya" => kaisya  },
-  #  { "category" => "next action", "done" => false, "kaisya" => kaisya },
-  #  { "category" => "waiting", "done" => false, "kaisya" => kaisya },
-  #  { "category" => "", "done" => false, "kaisya" => kaisya  }])
 end
 
