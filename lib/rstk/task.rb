@@ -38,6 +38,7 @@ module Rstk
     def add_from_cmdline task
       category_check task
       @list.add task
+      puts "[*] タスク登録しました: #{task['name']}"
     end
 
     def edit id

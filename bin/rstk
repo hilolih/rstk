@@ -1,6 +1,6 @@
 require "rstk"
 require "optparse"
-params = ARGV.getopts('ac:e:d:', 'all', 'home', 'commit')
+params = ARGV.getopts('ac:e:d:m:', 'all', 'home', 'commit')
 
 # task.add_from_cmdline({"name"=> "add test"})
 #  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
@@ -17,7 +17,11 @@ end
 if params["a"]
   # add task
   task = Rstk::Task.new
-  task.add
+  if params["m"]
+    task.add_from_cmdline({"name" => params["m"]})
+  else
+    task.add
+  end
 elsif params["e"]
   # edit task
   task = Rstk::Task.new
@@ -40,6 +44,7 @@ elsif params["commit"]
     g = Git.open("/home/hilolih/GTD", :log => log)
     g.commit_all('update')
     g.push('sakura')
+    puts "[*] git commitしました。"
   rescue Git::GitExecuteError => e
     puts "[!] 最新でした"
   end

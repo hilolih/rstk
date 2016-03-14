@@ -6,6 +6,7 @@ require "securerandom"
 require "date"
 require "git"
 require "logger"
+require "parslet"
 
 module Rstk
   require "rstk/task"
@@ -19,5 +20,6 @@ module Rstk
   require "rstk/error/kaisya_error"
   require "rstk/editor"
   require "rstk/editor/vim"
+  require "rstk/command_parser"
 end
 

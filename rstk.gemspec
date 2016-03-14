@@ -29,7 +29,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.10.a"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency "git", "~> 1.3.0"
+  spec.add_development_dependency "pry"
 
+  spec.add_dependency "git", "~> 1.3.0"
   spec.add_dependency "systemu"
+  spec.add_dependency "parslet", "~> 1.7.1"
 end
