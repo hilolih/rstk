@@ -81,6 +81,7 @@ module Rstk
     def category_check opt
       # categoryに未定義の単語を入れさせない(空はOK）
       if opt.has_key?("category") and
+        not opt["category"].nil? and
         opt["category"] != "" and
         not Categories::List.include?( opt["category"] )
         raise Rstk::Error::CategoriesError

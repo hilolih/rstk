@@ -9,28 +9,20 @@ module Rstk
                         str('Project')    | 
                         str('Someday')    |
                         str('Calendar')   |
-                        str('Waiting')).as(:category) >> space? }
+                        str('Waiting')).as(:left) >> space? }
 
-    rule(:operator)   { match('[=]') >> space? }
+    rule(:operator)   { match('[=]').as(:op) >> space? }
+
+    rule(:logical)   { str('and') >> space? }
    
-    rule(:keyword) { str("'") >> match("[^']").repeat(1).as(:keyword) >> str("'") >> space? }
+    rule(:keyword) { str("'") >> match("[^']").repeat(1).as(:right) >> str("'") >> space? }
 
-    rule(:expression){ categories >> operator >> keyword }
+    rule(:expr){ categories >> operator >> keyword }
+
+    rule(:expression){ ( expr >> logical | expr ).repeat.as(:expr) }
 
     root :expression
   end
 
-  class SampleParser < Parslet::Parser
-    rule(:integer) { match('[0-9]').repeat(1) >> space? }
-    rule(:space)  { match('\s').repeat(1) }
-    rule(:space?) { space.maybe }
-
-    rule(:operator)   { match('[+]') >> space? }
-   
-    rule(:sum)        { integer >> operator >> expression }
-    rule(:expression) { sum | integer }
-
-    root :expression
-  end
 end
 
