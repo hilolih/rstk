@@ -59,4 +59,14 @@ describe Rstk::Task do
   it 'pass kaisya => false return true on kaisya_check' do
     expect( @task.kaisya_check({ "kaisya" => false })).to be true
   end
+
+  it 'Age表示。今日のタスクは０である' do
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2015,12,31))
+    expect( @task.age( "2015/12/31 23:38:18" ) ).to eq(0) 
+  end
+
+  it 'Age表示。昨日のタスクは１である' do
+    allow(Date).to receive_message_chain(:today).and_return(Date.new(2015,12,31))
+    expect( @task.age( "2015/12/30 00:38:18" ) ).to eq(1) 
+  end
 end

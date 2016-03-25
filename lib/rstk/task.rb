@@ -26,13 +26,14 @@ module Rstk
     end
 
     def format line
-      done = line["done"] ? "[x]" : "[*]"
+      done     = line["done"] ? "[x]" : "[*]"
       category = "[%12s]" % [ line["category"] ]
-      duedate = ""
+      task_age = "[%3s]" % [ age(line["create_time"]) ]
+      duedate  = ""
       if (line["category"] == 'calendar') and line["due-date"]
         duedate = "(" + line["due-date"] + ")"
       end
-      return "#{done} #{line['id'][0,6]} #{category} #{line['name']} #{duedate}"
+      return "#{done} #{line['id'][0,6]} #{category} #{task_age} #{line['name']} #{duedate}"
     end
 
     def add_from_cmdline task
@@ -109,6 +110,11 @@ module Rstk
       end
       true
     end
+
+    def age createtime
+      date = Date.strptime(createtime, '%Y/%m/%d')
+      (Date.today - date).to_i
+    end    
 
     private 
 

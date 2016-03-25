@@ -136,4 +136,5 @@ describe Rstk::YamlList do
     allow(Date).to receive_message_chain(:today).and_return(Date.new(2014,12,31))
     expect( @list.check_due_date("2015/01/01", {:after => "Today", :before => "Tomorrow"}) ).to be true 
   end
+
 end
