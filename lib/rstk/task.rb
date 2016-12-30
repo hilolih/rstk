@@ -19,12 +19,17 @@ module Rstk
       end
     end
 
+    # タスク一覧を表示
     def where opt={"done" => false}
-      @list.where(opt).each do |l|
-        puts format(l)
-      end
+      puts format_list(opt).join("\n")
     end
 
+    # 整形したタスク一覧の配列
+    def format_list opt
+      @list.where(opt).map{|l| format(l) }
+    end
+
+    # 各タスクを１行に整形する
     def format line
       done     = line["done"] ? "[x]" : "[*]"
       category = "[%12s]" % [ line["category"] ]
@@ -64,6 +69,9 @@ module Rstk
       end
     end
 
+    def edit_all opt={"done" => false}
+    end
+
     def add
       # Editorを起動してタスク登録
       comment = "# due-date: yyyy/mm/dd\n"
@@ -74,7 +82,9 @@ module Rstk
       category_check task
       name_check task
       @list.add task
-      puts "[*] タスク登録しました: #{task['name']}"
+      msg = "[*] タスク登録しました: #{task['name']}"
+      puts msg
+      Rstk::Slack.send(msg)
     end
 
     def delete id
