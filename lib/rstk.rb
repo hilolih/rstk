@@ -21,5 +21,6 @@ module Rstk
   require "rstk/editor"
   require "rstk/editor/vim"
   require "rstk/command_parser"
+  require "rstk/slack"
 end
 

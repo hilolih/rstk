@@ -39,7 +39,8 @@ module Rstk
     def add_from_cmdline task
       category_check task
       @list.add task
-      puts "[*] タスク登録しました: #{task['name']}"
+      msg = "[*] タスク登録しました: #{task['name']}"
+      Rstk::Slack.send(msg)
     end
 
     def edit id
@@ -57,7 +58,9 @@ module Rstk
         done_check task
         kaisya_check task
         task = @list.update( task )
-        puts "[*] タスク変更しました: #{task['name']}"
+        msg = "[*] タスク変更しました: #{task['name']}"
+        puts msg
+        Rstk::Slack.send(msg)
       end
     end
 
