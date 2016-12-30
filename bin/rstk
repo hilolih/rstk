@@ -1,18 +1,19 @@
 require "rstk"
 require "optparse"
-params = ARGV.getopts('ac:e:d:m:', 'all', 'home', 'commit')
+params = ARGV.getopts('ac:e:d:m:', 'all', 'home', 'commit', 'edit')
 
-# task.add_from_cmdline({"name"=> "add test"})
-#  task.add_from_cmdline({"name"=> "add test", "category" => "waiting"})
-# task.delete( 20160214122152 )
-# task.delete( 201 )
-# task.add
-#
-#
 kaisya = true
 if params["home"]
   kaisya = false
 end
+
+default = [{
+  "done"     => false,
+  "kaisya"   => kaisya,
+  "category" => [ "next action", "waiting", ""]
+},{
+  "due-date" => {:before => "Today"}, "done" => false, "kaisya" => kaisya
+}]
 
 if params["a"]
   # add task
@@ -48,15 +49,13 @@ elsif params["commit"]
   rescue Git::GitExecuteError => e
     puts "[!] 最新でした"
   end
+elsif params["edit"]
+  task = Rstk::Task.new
+
+  task.edit_all(default)
 else
   task = Rstk::Task.new
 
-  task.where([{
-    "done"     => false,
-    "kaisya"   => kaisya,
-    "category" => [ "next action", "waiting", ""]
-  },{
-    "due-date" => {:before => "Today"}, "done" => false, "kaisya" => kaisya
-  }])
+  task.where(default)
 end
 

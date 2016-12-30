@@ -70,6 +70,10 @@ module Rstk
     end
 
     def edit_all opt={"done" => false}
+      # Editorを起動してタスク登録
+      temp = create_temp(format_list(opt))
+      puts temp.path
+      Rstk::Editor::Vim.new.open( temp.path )
     end
 
     def add
@@ -131,13 +135,16 @@ module Rstk
 
     private 
 
-    def create_temp(hash, comment="")
+    def create_temp(obj, comment="")
       temp = ::Tempfile.new("rstk")
-      temp.puts hash.to_yaml
+      if obj.class == Hash
+        temp.puts obj.to_yaml
+      elsif obj.class == Array
+        temp.puts obj.join("\n")
+      end
       temp.puts comment
       temp.close
       return temp
     end
-
   end
 end
