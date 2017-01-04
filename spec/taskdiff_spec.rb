@@ -2,18 +2,26 @@ require 'spec_helper'
 
 describe Rstk::TaskDiff do
   before(:each) do
-    @temp = ::Tempfile.new("task")
+    @before = ::Tempfile.new("before")
     edit_before = <<EOF
 [*] cfe169 [ next action] [324] DockerコンテナでMQ
 [*] e28c51 [ next action] [324] DockerコンテナでDB2
 EOF
-    @temp.puts edit_before
-    @temp.close
+    @before.puts edit_before
+    @before.close
   end
 
-  #it "" do
-  #  @task = Rstk::TaskDiff.new(@temp.path)
-  #end
+  it "変化なしファイルを比較" do
+    after = ::Tempfile.new("after")
+    edit_after = <<EOF
+[*] cfe169 [ next action] [324] DockerコンテナでMQ
+[*] e28c51 [ next action] [324] DockerコンテナでDB2
+EOF
+    after.puts edit_after
+    after.close
+    taskdiff = Rstk::TaskDiff.new(@before.path, after.path)
+    expect( taskdiff.actions() ).to eq([]) 
+  end
 
   #it 'raise DoneError invalid name on done_check' do
   #  expect {
