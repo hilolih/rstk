@@ -10,6 +10,7 @@ require "parslet"
 
 module Rstk
   require "rstk/task"
+  require "rstk/taskdiff"
   require "rstk/list"
   require "rstk/yamllist"
   require "rstk/categories"
