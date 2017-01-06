@@ -23,6 +23,16 @@ EOF
     expect( taskdiff.actions() ).to eq([]) 
   end
 
+  it "タスクをひとつ削除" do
+    after = ::Tempfile.new("after")
+    edit_after = <<EOF
+[*] cfe169 [ next action] [324] DockerコンテナでMQ
+EOF
+    after.puts edit_after
+    after.close
+    taskdiff = Rstk::TaskDiff.new(@before.path, after.path)
+    expect( taskdiff.actions() ).to eq([{ "method" => "delete", "id" => "e28c51"} ]) 
+  end
   #it 'raise DoneError invalid name on done_check' do
   #  expect {
   #    @task.done_check({ "done" => "hoge" })
